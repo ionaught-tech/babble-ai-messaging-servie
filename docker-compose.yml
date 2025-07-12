@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo-single-rs
+    ports:
+      - 28017:27017
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mongo-net
+
+volumes:
+  mongo-data:
+
+networks:
+  mongo-net:
