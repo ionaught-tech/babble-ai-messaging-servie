@@ -3,8 +3,20 @@ import http from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/database';
 import { handleSocket } from './services/socket';
+import addRequestId from 'express-request-id';
+import expressWinston from 'express-winston';
+import logger from './config/logger';
 
 const app = express();
+app.use(addRequestId());
+
+app.use(expressWinston.logger({
+    winstonInstance: logger,
+    meta: true,
+    msg: 'HTTP {{req.method}} {{req.url}}',
+    expressFormat: true,
+    colorize: false,
+}));
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -24,5 +36,5 @@ app.get('/version', (_req, res) => {
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
-    console.log(`listening on *:${PORT}`);
+    logger.info(`listening on *:${PORT}`);
 });

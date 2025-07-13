@@ -2,7 +2,6 @@ import { Server, Socket } from 'socket.io';
 import Message from '../models/Message';
 import ExternalEvent from '../models/ExternalEvent';
 import logger from '../config/logger';
-import { v4 as uuidv4 } from 'uuid';
 
 export const handleSocket = (io: Server) => {
     const externalEventChangeStream = ExternalEvent.watch();
@@ -15,19 +14,18 @@ export const handleSocket = (io: Server) => {
     });
 
     io.on('connection', (socket: Socket) => {
-        const sessionId = uuidv4();
-        logger.info(`A user connected with session ID: ${sessionId}`);
+        logger.info('A user connected');
 
         const userId = socket.handshake.headers['user-id'];
 
         if (!userId || Array.isArray(userId)) {
-            logger.warn('User ID is missing or invalid. Disconnecting socket.', { sessionId });
+            logger.warn('User ID is missing or invalid. Disconnecting socket.');
             socket.disconnect();
             return;
         }
 
         socket.on('disconnect', () => {
-            logger.info(`User disconnected with session ID: ${sessionId}`);
+            logger.info('User disconnected');
         });
 
         socket.on('chat message', async (msg: string) => {
@@ -36,7 +34,7 @@ export const handleSocket = (io: Server) => {
                 userId: userId,
             });
             await message.save();
-            logger.info('New message saved', { message, sessionId });
+            logger.info('New message saved', { message });
             io.emit('chat message', { content: msg, userId: userId });
         });
     });
