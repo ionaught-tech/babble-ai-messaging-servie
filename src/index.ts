@@ -12,8 +12,13 @@ connectDB();
 
 handleSocket(io);
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello world</h1>');
+app.get('/health-check', (_req, res) => {
+    res.send('OK');
+});
+
+app.get('/version', (_req, res) => {
+    const version = process.env.VERSION || process.env.npm_package_version;
+    res.send(version);
 });
 
 const PORT = process.env.PORT || 3000;
