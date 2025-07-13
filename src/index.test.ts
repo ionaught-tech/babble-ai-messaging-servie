@@ -3,6 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { io as ioc, Socket as ClientSocket } from 'socket.io-client';
 import express from 'express';
+import { handleSocket } from './services/socket';
 
 interface MessagePayload {
     content: string;
@@ -17,7 +18,8 @@ let clientSocket: ClientSocket;
 beforeAll((done) => {
     app = express();
     server = http.createServer(app);
-    io = new Server(server);
+        io = new Server(server);
+    handleSocket(io);
     app.get('/', (req, res) => {
         res.send('<h1>Hello world</h1>');
     });
