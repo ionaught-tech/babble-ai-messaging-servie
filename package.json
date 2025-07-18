@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.846.0",
     "@types/express": "^5.0.3",
     "@types/express-request-id": "^1.4.3",
     "@types/express-winston": "^3.0.4",

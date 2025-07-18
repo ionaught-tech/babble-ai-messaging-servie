@@ -93,3 +93,24 @@ npm test
       console.log(data);
     });
     ```
+
+## Docker
+
+To run the application using Docker, follow these steps:
+
+1.  Build the Docker image:
+    ```bash
+    docker compose up.
+    ```
+
+2.  Run the Docker container:
+    ```bash
+    docker exec -it mongo-single-rs mongosh
+    ```
+3.  Start replica set in MongoDB shell:
+    ```javascript
+    rs.initiate()
+    ```
+
+
+The application will be accessible at `http://localhost:3000`.
